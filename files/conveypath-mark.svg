@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 73 73" width="73" height="73" role="img" aria-label="ConveyPath mark">
+  <title>ConveyPath mark</title>
+  <g transform="translate(-13.5 -13.5)">
+    <path d="M68.47 26.36 A30 30 0 1 0 68.47 73.64" fill="none" stroke="#1A1A1A" stroke-width="13"/>
+    <circle cx="50" cy="50" r="8.5" fill="#B5121B"/>
+  </g>
+</svg>
