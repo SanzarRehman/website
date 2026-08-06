@@ -116,6 +116,9 @@ transition:opacity .75s ease,transform .75s cubic-bezier(.2,.7,.3,1)}
 .challenge .body{display:flex;flex-direction:column;gap:22px;padding-top:6px}
 .challenge .out{font-size:clamp(18px,1.3vw,21px);line-height:1.5;color:var(--ink);
 max-width:34ch;border-left:2px solid var(--signal);padding-left:20px}
+/* floating mesh on the section ground, weighted toward the open right side */
+.mesh{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.challenge>*:not(.mesh){position:relative;z-index:1}
 .friction{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:38px 40px;
 margin-top:84px}
 .friction>div{border-top:1px solid var(--rule);padding-top:22px;position:relative}
@@ -153,6 +156,8 @@ text-transform:uppercase;fill:#6E6C67}
 .diagram.in .pk3{animation-delay:1.8s}
 .diagram.in .pk4{animation-delay:2.7s}
 .diagram.in .pko{animation-duration:2.1s;animation-delay:1.2s}
+.diagram.in .pkt{animation-play-state:paused}
+.diagram.in.live .pkt{animation-play-state:running}
 }
 @keyframes travel{0%{offset-distance:0%;opacity:0}12%{opacity:1}
 84%{opacity:1}100%{offset-distance:100%;opacity:0}}
@@ -240,6 +245,7 @@ header.scrolled{background:var(--ink)}
 .flow{padding:88px 28px 96px}
 .sec{padding:88px 28px}
 .two{grid-template-columns:1fr;gap:32px}
+.mesh{display:none}
 .friction{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 28px;margin-top:56px}
 .plat-head{grid-template-columns:1fr;gap:26px;margin:0 0 54px}
 .platform .lede{margin:0}
@@ -296,12 +302,12 @@ mask-image:linear-gradient(to bottom,transparent 0,#000 10%)}
   <div class="shot">
     <picture>
       <source type="image/webp"
-              srcset="hero-keytag2-700.webp 700w, hero-keytag2-950.webp 950w, hero-keytag2-1270.webp 1270w"
+              srcset="hero-keytag3-560.webp 560w, hero-keytag3-648.webp 648w"
               sizes="(max-width:1000px) 100vw, 52vw">
-      <img src="hero-keytag2-950.jpg"
-           srcset="hero-keytag2-700.jpg 700w, hero-keytag2-950.jpg 950w, hero-keytag2-1270.jpg 1270w"
+      <img src="hero-keytag3-648.jpg"
+           srcset="hero-keytag3-560.jpg 560w, hero-keytag3-648.jpg 648w"
            sizes="(max-width:1000px) 100vw, 52vw"
-           width="1270" height="1343" fetchpriority="high" decoding="async" alt="">
+           width="648" height="682" fetchpriority="high" decoding="async" alt="">
     </picture>
   </div>
 </main>
@@ -550,6 +556,143 @@ mask-image:linear-gradient(to bottom,transparent 0,#000 10%)}
     addEventListener('load', onScroll);
     onScroll();
   }
+})();
+
+// A long twisted net ribbon across the section's open right side: seven
+// strands around a meandering centerline, the band rolling over on itself so
+// the strands pinch and cross, both ends dissolving to nothing. Undulates at
+// 30fps while the section is on screen; the cursor tugs the fabric. Static
+// under reduced motion. Segments batch into 12 alpha buckets per frame.
+(function(){
+  if (!matchMedia('(min-width: 1000px)').matches) return;
+  var sec = document.querySelector('.challenge');
+  if (!sec) return;
+  var cv = document.createElement('canvas');
+  cv.className = 'mesh';
+  cv.setAttribute('aria-hidden', 'true');
+  sec.appendChild(cv);
+  var ctx = cv.getContext('2d'),
+      W = 0, H = 0, dpr = 1, zones = [];
+  function size(){
+    W = sec.clientWidth; H = sec.clientHeight;
+    dpr = Math.min(1.5, window.devicePixelRatio || 1, 2600 / W);
+    cv.width = W * dpr; cv.height = H * dpr;
+    var sr = sec.getBoundingClientRect();
+    zones = [];
+    ['h2', '.body', '.friction'].forEach(function(q){
+      var el = sec.querySelector(q);
+      if (!el) return;
+      var er = el.getBoundingClientRect();
+      zones.push([er.left - sr.left - 16, er.top - sr.top - 16,
+                  er.right - sr.left + 16, er.bottom - sr.top + 16]);
+    });
+  }
+  function damp(x, y){
+    for (var k = 0; k < zones.length; k++){
+      var z = zones[k];
+      if (x > z[0] && x < z[2] && y > z[1] && y < z[3]) return .3;
+    }
+    return 1;
+  }
+
+  var N = 72, K = 7,                       // samples along, strands across
+      cx = [], cy = [], en = [], px = [], py = [], ox = [], oy = [],
+      BK = 12, CAP = .44, bq = [], blen = [], b2;
+  for (var k0 = 0; k0 < N * K; k0++){ px.push(0); py.push(0); ox.push(0); oy.push(0); }
+  for (var k1 = 0; k1 < N; k1++){ cx.push(0); cy.push(0); en.push(0); }
+  for (b2 = 0; b2 < BK; b2++){ bq.push([]); blen.push(0); }
+
+  function seg(a, b, e){
+    var sx2 = (px[a] + px[b]) * .5, sy2 = (py[a] + py[b]) * .5,
+        la = e * (.14 + .34 * sx2 / W) * damp(sx2, sy2);
+    if (la < .012) return;
+    var bi = Math.min(BK - 1, (la / CAP * BK) | 0), q = bq[bi], n2 = blen[bi];
+    q[n2] = px[a]; q[n2 + 1] = py[a]; q[n2 + 2] = px[b]; q[n2 + 3] = py[b];
+    blen[bi] = n2 + 4;
+  }
+  function draw(T){
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.lineWidth = 1;
+    var rect = cv.getBoundingClientRect(),
+        cmx = mx - rect.left, cmy = my - rect.top,
+        x0 = W * .20, y0 = H * .62, x1 = W * 1.06, y1 = H * .32, i, k, s;
+    for (i = 0; i < N; i++){
+      s = i / (N - 1);
+      cx[i] = x0 + (x1 - x0) * s;
+      cy[i] = y0 + (y1 - y0) * s
+            + H * .155 * Math.sin(s * 4.6 + T * .30)
+            + H * .055 * Math.sin(s * 9.3 - T * .19);
+      en[i] = Math.pow(Math.sin(Math.PI * s), .75);   // dissolve at both ends
+    }
+    for (i = 0; i < N; i++){
+      var ip = i ? i - 1 : 0, iq = i < N - 1 ? i + 1 : i,
+          tx = cx[iq] - cx[ip], ty = cy[iq] - cy[ip],
+          tl = Math.sqrt(tx * tx + ty * ty) || 1,
+          nx2 = -ty / tl, ny2 = tx / tl,
+          span = H * .15 * Math.cos((i / (N - 1)) * 5.4 + T * .24);  // rolling twist
+      for (k = 0; k < K; k++){
+        var u = k / (K - 1) * 2 - 1, id = i * K + k,
+            bx = cx[i] + nx2 * u * span,
+            by = cy[i] + ny2 * u * span,
+            dx = cmx - bx, dy = cmy - by,
+            dist = Math.sqrt(dx * dx + dy * dy),
+            pull = dist < 210 ? (1 - dist / 210) * .3 : 0;
+        ox[id] += (dx * pull - ox[id]) * .16;
+        oy[id] += (dy * pull - oy[id]) * .16;
+        px[id] = bx + ox[id]; py[id] = by + oy[id];
+      }
+    }
+    for (b2 = 0; b2 < BK; b2++) blen[b2] = 0;
+    for (k = 0; k < K; k++)
+      for (i = 1; i < N; i++)
+        seg((i - 1) * K + k, i * K + k, en[i]);
+    for (i = 0; i < N; i += 3)                        // rungs make it a net
+      for (k = 0; k < K - 1; k++)
+        seg(i * K + k, i * K + k + 1, en[i] * .85);
+    for (b2 = 0; b2 < BK; b2++){
+      if (!blen[b2]) continue;
+      ctx.strokeStyle = 'rgba(181,18,27,' + ((b2 + .5) / BK * CAP).toFixed(3) + ')';
+      ctx.beginPath();
+      var q = bq[b2];
+      for (i = 0; i < blen[b2]; i += 4){
+        ctx.moveTo(q[i], q[i + 1]); ctx.lineTo(q[i + 2], q[i + 3]);
+      }
+      ctx.stroke();
+    }
+  }
+  var mx = -1e4, my = -1e4;
+  size(); draw(0);
+  addEventListener('load', function(){ size(); draw(0); });
+  addEventListener('resize', function(){ size(); draw(0); });
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;  // stays static
+
+  var running = false, raf = null, last = 0;
+  function loop(now){
+    if (now - last >= 33){ last = now; draw(now * .001); }  // ~30fps is plenty
+    raf = running ? requestAnimationFrame(loop) : null;
+  }
+  if ('IntersectionObserver' in window){
+    new IntersectionObserver(function(en2){
+      running = en2[0].isIntersecting;
+      if (running && raf === null) raf = requestAnimationFrame(loop);
+    }).observe(sec);
+  } else {
+    running = true; raf = requestAnimationFrame(loop);
+  }
+  sec.addEventListener('mousemove', function(e){ mx = e.clientX; my = e.clientY; }, {passive:true});
+  sec.addEventListener('mouseleave', function(){ mx = -1e4; my = -1e4; });
+})();
+
+// Pause the diagram's traveling dots while their section is off screen.
+(function(){
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function(es){
+    for (var i = 0; i < es.length; i++)
+      es[i].target.classList.toggle('live', es[i].isIntersecting);
+  });
+  var ds = document.querySelectorAll('.diagram');
+  for (var i = 0; i < ds.length; i++) io.observe(ds[i]);
 })();
 </script>
 </body></html>
