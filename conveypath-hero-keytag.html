@@ -51,39 +51,52 @@ color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule);paddin
 .btn2:hover,.btn2:focus-visible{border-color:var(--signal);color:var(--signal)}
 
 /* --- signature workflow ------------------------------------------------ */
-.flow{position:relative;padding:132px 48px 140px;border-top:1px solid var(--rule)}
+.flow{position:relative;padding:112px 48px 118px;border-top:1px solid var(--rule)}
+/* two ribbon bands drift across the section's ground as you scroll;
+   transforms only, driven by the same eased progress as the rail fill */
+.ribbons{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.rb{display:block;position:absolute;left:-25%;width:150%;height:64px;
+background:linear-gradient(180deg,rgba(181,18,27,.03),rgba(181,18,27,.08));
+border-top:1px solid rgba(181,18,27,.16);border-bottom:1px solid rgba(181,18,27,.07);
+will-change:transform}
+.rb.r1{top:11%;transform:translateX(-20%) rotate(-4deg)}
+.rb.r2{bottom:6%;height:46px;transform:translateX(6%) rotate(3deg)}
+.flow-head{position:relative;z-index:1;display:flex;align-items:flex-end;
+justify-content:space-between;gap:48px;margin:0 0 72px}
 .flow .eyebrow{margin:0 0 20px}
 .flow h2{font-family:var(--display);font-weight:500;font-size:clamp(26px,2.4vw,38px);line-height:1.2;letter-spacing:-.016em;
-margin:0 0 92px;max-width:26ch}
+margin:0;max-width:26ch}
+.flow-meta{flex:none;margin:0 0 5px;font-family:var(--display);font-size:13px;font-weight:500;
+letter-spacing:.15em;text-transform:uppercase;color:var(--gray);text-align:right;
+line-height:1.9;font-variant-numeric:tabular-nums}
+.flow-meta b{font-weight:500;color:var(--signal)}
 
-.rail-wrap{position:relative}
+.rail-wrap{position:relative;z-index:1}
 .rail{list-style:none;margin:0;padding:0;position:relative;
-display:grid;grid-template-columns:repeat(7,minmax(0,1fr));column-gap:26px}
-.track{position:absolute;left:0;right:0;top:30px;height:1px;background:var(--rule)}
+display:grid;grid-template-columns:repeat(7,minmax(0,1fr));column-gap:24px}
+.track{position:absolute;left:28px;right:calc((100% - 144px)/7 - 28px);top:28px;height:1px;background:var(--rule)}
 .track i{display:block;width:100%;height:100%;background:var(--signal);
 transform:scaleX(0);transform-origin:left center;will-change:transform}
 .st{position:relative;min-width:0}
-.st .n{display:block;height:22px;line-height:22px;font-family:var(--display);
-font-size:15px;font-weight:500;color:var(--gray);
-font-variant-numeric:tabular-nums;opacity:.42;transform:translateY(7px);
-transition:color .5s ease,opacity .5s ease,transform .5s cubic-bezier(.2,.7,.3,1)}
-.st .dot{display:block;position:relative;width:9px;height:9px;margin-top:4px;border-radius:50%;
-background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);
-transition:background .4s ease,box-shadow .4s ease,transform .4s ease}
-.st .l{display:block;margin-top:22px;font-size:11px;font-weight:500;letter-spacing:.13em;
+.st .n{position:relative;display:flex;align-items:center;justify-content:center;
+width:56px;height:56px;border-radius:50%;background:var(--paper);
+box-shadow:inset 0 0 0 1px var(--rule);
+font-family:var(--display);font-size:16px;font-weight:500;color:#6E6C67;
+font-variant-numeric:tabular-nums;
+transition:background .45s ease,box-shadow .45s ease,color .45s ease,transform .45s ease}
+.st .l{display:block;margin-top:16px;font-size:11px;font-weight:500;letter-spacing:.13em;
 text-transform:uppercase;line-height:1.55;color:var(--gray);
-overflow-wrap:break-word;hyphens:auto;opacity:.42;transform:translateY(7px);
+overflow-wrap:break-word;hyphens:auto;opacity:.6;transform:translateY(6px);
 transition:color .5s ease,opacity .5s ease,transform .5s cubic-bezier(.2,.7,.3,1)}
-.st .n{transition-delay:.02s} .st .l{transition-delay:.08s}
-.st.on .n,.st.on .l{opacity:1;transform:none}
-.st.on .n{color:var(--signal)}
-.st.on .dot{background:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
-.st.on .l{color:var(--ink)}
-.st.cur .dot{background:var(--signal);box-shadow:inset 0 0 0 1px var(--signal);transform:scale(1.3)}
-.st .dot::after{content:"";position:absolute;inset:-5px;border-radius:50%;
-border:1px solid var(--signal);opacity:0;transform:scale(.55);pointer-events:none}
-.st.cur .dot::after{animation:ring 1.9s cubic-bezier(.2,.6,.3,1) infinite}
-@keyframes ring{0%{opacity:.5;transform:scale(.55)}70%{opacity:0;transform:scale(1.5)}100%{opacity:0;transform:scale(1.5)}}
+.st.on .n{background:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);color:var(--paper)}
+.st.on .l{opacity:1;transform:none;color:var(--ink)}
+.st.cur .n{background:var(--signal);box-shadow:inset 0 0 0 1px var(--signal);
+color:#FFF;transform:scale(1.07)}
+.st.cur .l{color:var(--signal)}
+.st .n::after{content:"";position:absolute;inset:-8px;border-radius:50%;
+border:1px solid var(--signal);opacity:0;transform:scale(.72);pointer-events:none}
+.st.cur .n::after{animation:ring 1.9s cubic-bezier(.2,.6,.3,1) infinite}
+@keyframes ring{0%{opacity:.5;transform:scale(.72)}70%{opacity:0;transform:scale(1.28)}100%{opacity:0;transform:scale(1.28)}}
 
 /* --- shared section rhythm --------------------------------------------- */
 .sec{position:relative;padding:130px 48px;border-top:1px solid var(--rule)}
@@ -96,27 +109,53 @@ line-height:1.2;letter-spacing:-.016em;margin:0}
 .rv{opacity:0;transform:translateY(16px);
 transition:opacity .75s ease,transform .75s cubic-bezier(.2,.7,.3,1)}
 .rv.in{opacity:1;transform:none}
-.rv2{transition-delay:.1s} .rv3{transition-delay:.2s}
+.rv2{transition-delay:.1s} .rv3{transition-delay:.2s} .rv4{transition-delay:.3s}
 
 /* --- the challenge ------------------------------------------------------ */
 .challenge h2{max-width:19ch}
 .challenge .body{display:flex;flex-direction:column;gap:22px;padding-top:6px}
 .challenge .out{font-size:clamp(18px,1.3vw,21px);line-height:1.5;color:var(--ink);
 max-width:34ch;border-left:2px solid var(--signal);padding-left:20px}
+.friction{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:38px 40px;
+margin-top:84px}
+.friction>div{border-top:1px solid var(--rule);padding-top:22px;position:relative}
+.friction>div::before{content:"";position:absolute;top:-1px;left:0;width:28px;height:2px;
+background:var(--signal)}
+.friction h3{font-size:16px;font-weight:500;letter-spacing:-.005em;margin:0 0 10px;color:var(--ink)}
+.friction p{margin:0;font-size:15px;line-height:1.55;color:#4A4844;max-width:30ch}
 
 /* --- the platform ------------------------------------------------------- */
+.plat-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,44ch);
+gap:36px 90px;align-items:end;margin:0 0 74px}
 .platform h2.big{font-size:clamp(34px,3.6vw,58px);line-height:1.06;letter-spacing:-.022em;
-max-width:14ch;margin:0 0 46px}
-.platform .lede{max-width:46ch}
-.diagram{width:100%;height:auto;overflow:visible}
-.diagram .ln{fill:none;stroke:var(--rule);stroke-width:1}
-.diagram .hub{fill:none;stroke:var(--ink);stroke-width:1.5}
-.diagram .out{fill:none;stroke:var(--signal);stroke-width:1.5}
-.diagram .nd{fill:var(--paper);stroke:var(--ink);stroke-width:1}
-.diagram text{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.11em;
-text-transform:uppercase;fill:var(--gray)}
-.diagram text.on{fill:var(--ink)}
+max-width:14ch;margin:0}
+.platform .lede{max-width:46ch;margin:0 0 6px}
+.diagram{display:block;width:100%;max-width:1240px;margin:0 auto;height:auto;overflow:visible}
+.d-mob{display:none}
+.diagram .ln{fill:none;stroke:#CFCCC6;stroke-width:1.4}
+.diagram .hub{fill:var(--paper);stroke:var(--ink);stroke-width:1.6}
+.diagram .out{fill:none;stroke:var(--signal);stroke-width:1.6}
+.diagram .nd{fill:var(--paper);stroke:var(--ink);stroke-width:1.4}
+.diagram text{font-family:var(--sans);font-size:10.5px;font-weight:500;letter-spacing:.12em;
+text-transform:uppercase;fill:#6E6C67}
+.diagram text.on{fill:var(--ink);font-size:11.5px}
 .diagram text.sig{fill:var(--signal)}
+.d-mob text{font-size:11.5px}
+/* routes draw themselves in on reveal (pathLength=1 normalizes the dash) */
+.diagram .ln,.diagram .out{stroke-dasharray:1;stroke-dashoffset:1}
+.diagram.in .ln{stroke-dashoffset:0;transition:stroke-dashoffset 1s cubic-bezier(.2,.7,.3,1) .25s}
+.diagram.in .out{stroke-dashoffset:0;transition:stroke-dashoffset .7s cubic-bezier(.2,.7,.3,1) 1.05s}
+/* titles in motion: dots ride the drawn routes */
+.pkt{opacity:0}
+@supports (offset-path:path('M0 0 L1 1')){
+.diagram.in .pkt{animation:travel 3.6s linear infinite}
+.diagram.in .pk2{animation-delay:.9s}
+.diagram.in .pk3{animation-delay:1.8s}
+.diagram.in .pk4{animation-delay:2.7s}
+.diagram.in .pko{animation-duration:2.1s;animation-delay:1.2s}
+}
+@keyframes travel{0%{offset-distance:0%;opacity:0}12%{opacity:1}
+84%{opacity:1}100%{offset-distance:100%;opacity:0}}
 
 /* --- product pillars: a spec sheet, not a card grid --------------------- */
 .spec{list-style:none;margin:44px 0 0;padding:0;border-top:1px solid var(--rule)}
@@ -168,8 +207,12 @@ mask-image:linear-gradient(to right,transparent 0,#000 4%)}
 @keyframes reveal{from{opacity:0;transform:scale(1.05)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){
 .rise,.shot img{animation:none;opacity:1;transform:none}
-.st .n,.st .l{opacity:1;transform:none;transition:none}
-.st .dot::after{animation:none}
+.st .n{transition:none}
+.st .l{opacity:1;transform:none;transition:none}
+.st .n::after{animation:none}
+.rb{transition:none}
+.diagram .ln,.diagram .out{stroke-dashoffset:0;transition:none}
+.pkt{display:none}
 .rv{opacity:1;transform:none;transition:none}}
 
 @media (min-width:1600px){
@@ -179,22 +222,30 @@ mask-image:linear-gradient(to right,transparent 0,#000 4%)}
 @media (max-width:1180px){
 /* longest label (CLEARINGHOUSE) needs ~104px; columns fall to ~107px here */
 .st .l{font-size:10px;letter-spacing:.1em}
-.rail{column-gap:20px}
+.rail{column-gap:18px}
+.track{right:calc((100% - 108px)/7 - 28px)}
 }
 @media (max-width:1000px){
 .rail{grid-template-columns:1fr;column-gap:0}
-.track{left:4px;right:auto;top:8px;bottom:8px;width:1px;height:auto}
+.track{left:20px;right:auto;top:20px;bottom:20px;width:1px;height:auto}
 .track i{transform:scaleY(0);transform-origin:center top}
-.st{padding:0 0 26px 30px}
-.st .n{height:auto;line-height:1.2;font-size:14px}
-.st .dot{position:absolute;left:0;top:5px;margin:0}
-.st .l{margin-top:6px;font-size:11.5px;letter-spacing:.13em}
+.st{display:flex;align-items:center;gap:18px;padding:0 0 26px}
+.st:last-child{padding-bottom:0}
+.st .n{width:40px;height:40px;font-size:14px;flex:none}
+.st .l{margin-top:0;font-size:11.5px;letter-spacing:.13em}
+.flow-head{display:block;margin:0 0 52px}
+.flow-meta{display:none}
 header{padding:24px 28px;background:var(--paper)}
 header.scrolled{background:var(--ink)}
 .flow{padding:88px 28px 96px}
 .sec{padding:88px 28px}
 .two{grid-template-columns:1fr;gap:32px}
-.platform h2.big{margin-bottom:34px}
+.friction{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 28px;margin-top:56px}
+.plat-head{grid-template-columns:1fr;gap:26px;margin:0 0 54px}
+.platform .lede{margin:0}
+/* below ~1000px the horizontal diagram's labels fall under ~9px; use the vertical one */
+.d-desk{display:none}
+.d-mob{display:block;max-width:440px;margin:0 auto}
 .spec li{grid-template-columns:46px minmax(0,1fr);gap:0 20px;padding:24px 0}
 .spec p{grid-column:2;margin-top:8px}
 .why-grid{grid-template-columns:1fr}
@@ -202,7 +253,6 @@ header.scrolled{background:var(--ink)}
 .why-grid div:last-child{border-bottom:0}
 .cta{padding:96px 28px}
 footer{padding:0 28px 40px}
-.flow h2{margin-bottom:56px}
 .hero{grid-template-columns:1fr;min-height:0}
 .copy{padding:100px 28px 44px;order:1}
 .shot{order:2;height:52svh;min-height:340px}
@@ -212,6 +262,7 @@ mask-image:linear-gradient(to bottom,transparent 0,#000 10%)}
 }
 @media (max-width:560px){
 .nav .links{display:none}
+.friction{grid-template-columns:1fr}
 .sub{font-size:19px}
 .btn{padding:17px 26px;font-size:15px}
 }
@@ -256,18 +307,24 @@ mask-image:linear-gradient(to bottom,transparent 0,#000 10%)}
 </main>
 
 <section class="flow" id="platform">
-  <p class="eyebrow">Signature workflow</p>
-  <h2>One intelligent platform orchestrating every stage of the vehicle title lifecycle.</h2>
+  <div class="ribbons" aria-hidden="true"><i class="rb r1"></i><i class="rb r2"></i></div>
+  <div class="flow-head">
+    <div>
+      <p class="eyebrow">Signature workflow</p>
+      <h2>One intelligent platform orchestrating every stage of the vehicle title lifecycle.</h2>
+    </div>
+    <p class="flow-meta"><b>07 stages</b><br>intake to issued title</p>
+  </div>
   <div class="rail-wrap">
     <div class="track" aria-hidden="true"><i></i></div>
     <ol class="rail">
-      <li class="st"><span class="n">01</span><span class="dot"></span><span class="l">Eligibility Screening</span></li>
-      <li class="st"><span class="n">02</span><span class="dot"></span><span class="l">Guided Intake</span></li>
-      <li class="st"><span class="n">03</span><span class="dot"></span><span class="l">Packet Assembly</span></li>
-      <li class="st"><span class="n">04</span><span class="dot"></span><span class="l">Clearinghouse Submission</span></li>
-      <li class="st"><span class="n">05</span><span class="dot"></span><span class="l">Status Tracking</span></li>
-      <li class="st"><span class="n">06</span><span class="dot"></span><span class="l">Rejection Translation</span></li>
-      <li class="st"><span class="n">07</span><span class="dot"></span><span class="l">Issuance &amp; Fees</span></li>
+      <li class="st"><span class="n">01</span><span class="l">Eligibility Screening</span></li>
+      <li class="st"><span class="n">02</span><span class="l">Guided Intake</span></li>
+      <li class="st"><span class="n">03</span><span class="l">Packet Assembly</span></li>
+      <li class="st"><span class="n">04</span><span class="l">Clearinghouse Submission</span></li>
+      <li class="st"><span class="n">05</span><span class="l">Status Tracking</span></li>
+      <li class="st"><span class="n">06</span><span class="l">Rejection Translation</span></li>
+      <li class="st"><span class="n">07</span><span class="l">Issuance &amp; Fees</span></li>
     </ol>
   </div>
 </section>
@@ -283,35 +340,79 @@ mask-image:linear-gradient(to bottom,transparent 0,#000 10%)}
       <p class="out">Modern businesses need technology that simplifies complexity — not adds to it.</p>
     </div>
   </div>
+  <div class="friction">
+    <div class="rv"><h3>Disconnected systems</h3>
+      <p>Title work scattered across tools that don't share data.</p></div>
+    <div class="rv rv2"><h3>Manual processes</h3>
+      <p>Repetitive steps that consume staff time and invite error.</p></div>
+    <div class="rv rv3"><h3>Paper documentation</h3>
+      <p>Physical paperwork that slows every handoff.</p></div>
+    <div class="rv rv4"><h3>State-specific requirements</h3>
+      <p>Rules that shift from one jurisdiction to the next.</p></div>
+  </div>
 </section>
 
 <section class="sec platform">
-  <p class="eyebrow rv">The ConveyPath platform</p>
-  <h2 class="big rv">One Platform. Endless Possibilities.</h2>
-  <div class="two">
+  <div class="plat-head">
+    <div>
+      <p class="eyebrow rv">The ConveyPath platform</p>
+      <h2 class="big rv">One Platform. Endless Possibilities.</h2>
+    </div>
     <p class="lede rv rv2">The platform adapts to each client's workflows, compliance requirements,
     and integrations rather than forcing standardized processes.</p>
-    <svg class="diagram rv rv3" viewBox="0 0 520 260" role="img"
-         aria-label="Retailers, fleets, lenders and insurers submit through one platform to the state clearinghouse.">
-      <path class="ln" d="M118 30 C210 30 210 130 260 130"/>
-      <path class="ln" d="M118 96 C210 96 210 130 260 130"/>
-      <path class="ln" d="M118 164 C210 164 210 130 260 130"/>
-      <path class="ln" d="M118 230 C210 230 210 130 260 130"/>
-      <circle class="nd" cx="118" cy="30" r="3.5"/>
-      <circle class="nd" cx="118" cy="96" r="3.5"/>
-      <circle class="nd" cx="118" cy="164" r="3.5"/>
-      <circle class="nd" cx="118" cy="230" r="3.5"/>
-      <text x="108" y="34" text-anchor="end">Retailers</text>
-      <text x="108" y="100" text-anchor="end">Fleets</text>
-      <text x="108" y="168" text-anchor="end">Lenders</text>
-      <text x="108" y="234" text-anchor="end">Insurers</text>
-      <rect class="hub" x="260" y="106" width="112" height="48" rx="4"/>
-      <text class="on" x="316" y="134" text-anchor="middle">ConveyPath</text>
-      <path class="out" d="M372 130 H452"/>
-      <circle cx="452" cy="130" r="4" fill="var(--signal)"/>
-      <text class="sig" x="452" y="112" text-anchor="middle">Clearinghouse</text>
-    </svg>
   </div>
+  <svg class="diagram d-desk rv rv3" viewBox="0 0 1080 330" role="img"
+       aria-label="Retailers, fleets, lenders and insurers submit through one platform to the state clearinghouse.">
+    <path class="ln" pathLength="1" d="M210 45 C370 45 410 165 480 165"/>
+    <path class="ln" pathLength="1" d="M210 125 C370 125 415 165 480 165"/>
+    <path class="ln" pathLength="1" d="M210 205 C370 205 415 165 480 165"/>
+    <path class="ln" pathLength="1" d="M210 285 C370 285 410 165 480 165"/>
+    <path class="out" pathLength="1" d="M640 165 H1010"/>
+    <circle class="nd" cx="210" cy="45" r="6"/>
+    <circle class="nd" cx="210" cy="125" r="6"/>
+    <circle class="nd" cx="210" cy="205" r="6"/>
+    <circle class="nd" cx="210" cy="285" r="6"/>
+    <text x="192" y="49" text-anchor="end">Retailers</text>
+    <text x="192" y="129" text-anchor="end">Fleets</text>
+    <text x="192" y="209" text-anchor="end">Lenders</text>
+    <text x="192" y="289" text-anchor="end">Insurers</text>
+    <rect class="hub" x="480" y="138" width="160" height="54" rx="27"/>
+    <circle cx="507" cy="165" r="3.5" fill="var(--signal)"/>
+    <text class="on" x="570" y="169" text-anchor="middle">ConveyPath</text>
+    <circle cx="1010" cy="165" r="6.5" fill="var(--signal)"/>
+    <text class="sig" x="1010" y="140" text-anchor="middle">Clearinghouse</text>
+    <circle class="pkt pk1" r="3.5" fill="var(--ink)" style="offset-path:path('M210 45 C370 45 410 165 480 165')"/>
+    <circle class="pkt pk2" r="3.5" fill="var(--ink)" style="offset-path:path('M210 125 C370 125 415 165 480 165')"/>
+    <circle class="pkt pk3" r="3.5" fill="var(--ink)" style="offset-path:path('M210 205 C370 205 415 165 480 165')"/>
+    <circle class="pkt pk4" r="3.5" fill="var(--ink)" style="offset-path:path('M210 285 C370 285 410 165 480 165')"/>
+    <circle class="pkt pko" r="3.5" fill="var(--signal)" style="offset-path:path('M640 165 L1010 165')"/>
+  </svg>
+  <svg class="diagram d-mob rv rv3" viewBox="0 0 340 436" role="img"
+       aria-label="Retailers, fleets, lenders and insurers submit through one platform to the state clearinghouse.">
+    <path class="ln" pathLength="1" d="M20 30 C26 160 96 246 170 270"/>
+    <path class="ln" pathLength="1" d="M20 90 C28 185 100 252 170 270"/>
+    <path class="ln" pathLength="1" d="M20 150 C34 214 104 258 170 270"/>
+    <path class="ln" pathLength="1" d="M20 210 C44 242 112 264 170 270"/>
+    <path class="out" pathLength="1" d="M170 324 V382"/>
+    <circle class="nd" cx="20" cy="30" r="5"/>
+    <circle class="nd" cx="20" cy="90" r="5"/>
+    <circle class="nd" cx="20" cy="150" r="5"/>
+    <circle class="nd" cx="20" cy="210" r="5"/>
+    <text x="36" y="34">Retailers</text>
+    <text x="36" y="94">Fleets</text>
+    <text x="36" y="154">Lenders</text>
+    <text x="36" y="214">Insurers</text>
+    <rect class="hub" x="90" y="272" width="160" height="52" rx="26"/>
+    <circle cx="116" cy="298" r="3.5" fill="var(--signal)"/>
+    <text class="on" x="178" y="302" text-anchor="middle">ConveyPath</text>
+    <circle cx="170" cy="390" r="6" fill="var(--signal)"/>
+    <text class="sig" x="170" y="420" text-anchor="middle">Clearinghouse</text>
+    <circle class="pkt pk1" r="3" fill="var(--ink)" style="offset-path:path('M20 30 C26 160 96 246 170 270')"/>
+    <circle class="pkt pk2" r="3" fill="var(--ink)" style="offset-path:path('M20 90 C28 185 100 252 170 270')"/>
+    <circle class="pkt pk3" r="3" fill="var(--ink)" style="offset-path:path('M20 150 C34 214 104 258 170 270')"/>
+    <circle class="pkt pk4" r="3" fill="var(--ink)" style="offset-path:path('M20 210 C44 242 112 264 170 270')"/>
+    <circle class="pkt pko" r="3" fill="var(--signal)" style="offset-path:path('M170 324 L170 382')"/>
+  </svg>
 </section>
 
 <section class="sec pillars" id="pillars">
@@ -371,6 +472,8 @@ mask-image:linear-gradient(to bottom,transparent 0,#000 10%)}
   var hdr  = document.querySelector('header'),
       rail = document.querySelector('.rail'),
       fill = document.querySelector('.track i'),
+      rb1  = document.querySelector('.rb.r1'),
+      rb2  = document.querySelector('.rb.r2'),
       sts  = Array.prototype.slice.call(document.querySelectorAll('.st'));
   var reduced  = matchMedia('(prefers-reduced-motion: reduce)').matches,
       vertical = function(){ return matchMedia('(max-width:1000px)').matches; };
@@ -379,6 +482,9 @@ mask-image:linear-gradient(to bottom,transparent 0,#000 10%)}
   // width here would relayout the rail on every frame.
   function render(p){
     fill.style.transform = vertical() ? 'scaleY('+p+')' : 'scaleX('+p+')';
+    // ribbons sweep in counter-motion; translate % is of their own 150% width
+    if (rb1) rb1.style.transform = 'translateX('+(p*26 - 20)+'%) rotate(-4deg)';
+    if (rb2) rb2.style.transform = 'translateX('+(6 - p*26)+'%) rotate(3deg)';
     var n = sts.length, step = 1/(n-1);
     for (var i=0; i<n; i++){
       var reached = p >= i*step - 0.004;
