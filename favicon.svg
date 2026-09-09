@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Conveyexa">
+  <title>Conveyexa</title>
+  <defs>
+    <linearGradient id="cxCyan-icon-tile-dark" gradientUnits="userSpaceOnUse"
+      x1="0.00" y1="84.00" x2="42.71" y2="132.81">
+      <stop offset="0" stop-color="#00D8FF"/>
+      <stop offset=".55" stop-color="#00CBFF"/>
+      <stop offset="1" stop-color="#00A8EC"/>
+    </linearGradient>
+    <linearGradient id="cxSlate-icon-tile-dark" gradientUnits="userSpaceOnUse"
+      x1="55.00" y1="132.00" x2="97.71" y2="180.81">
+      <stop offset="0" stop-color="#4A85B0"/>
+      <stop offset=".40" stop-color="#2C6288"/>
+      <stop offset=".72" stop-color="#1F4A6B"/>
+      <stop offset="1" stop-color="#173B57"/>
+    </linearGradient>
+    <linearGradient id="cxCyanShade-icon-tile-dark" gradientUnits="userSpaceOnUse"
+      x1="92.50" y1="0.00" x2="92.50" y2="84.00">
+      <stop offset="0" stop-color="#0072B4" stop-opacity=".34"/>
+      <stop offset=".40" stop-color="#0072B4" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cxSlateShade-icon-tile-dark" gradientUnits="userSpaceOnUse"
+      x1="147.50" y1="48.00" x2="147.50" y2="132.00">
+      <stop offset=".18" stop-color="#12304A" stop-opacity="0"/>
+      <stop offset=".85" stop-color="#12304A" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="113" fill="#0F172A"/>
+  <g transform="translate(74.24 156.03) scale(1.51467)">
+    <path fill="url(#cxCyan-icon-tile-dark)" d="M80.50,8.87 Q90.00,0.00 103.00,0.00 L172.00,0.00 Q185.00,0.00 175.50,8.87 L104.50,75.13 Q95.00,84.00 82.00,84.00 L13.00,84.00 Q0.00,84.00 9.50,75.13 L80.50,8.87 Z"/>
+    <path fill="url(#cxCyanShade-icon-tile-dark)" d="M80.50,8.87 Q90.00,0.00 103.00,0.00 L172.00,0.00 Q185.00,0.00 175.50,8.87 L104.50,75.13 Q95.00,84.00 82.00,84.00 L13.00,84.00 Q0.00,84.00 9.50,75.13 L80.50,8.87 Z"/>
+    <path fill="url(#cxSlate-icon-tile-dark)" d="M135.50,56.87 Q145.00,48.00 158.00,48.00 L227.00,48.00 Q240.00,48.00 230.50,56.87 L159.50,123.13 Q150.00,132.00 137.00,132.00 L68.00,132.00 Q55.00,132.00 64.50,123.13 L135.50,56.87 Z"/>
+    <path fill="url(#cxSlateShade-icon-tile-dark)" d="M135.50,56.87 Q145.00,48.00 158.00,48.00 L227.00,48.00 Q240.00,48.00 230.50,56.87 L159.50,123.13 Q150.00,132.00 137.00,132.00 L68.00,132.00 Q55.00,132.00 64.50,123.13 L135.50,56.87 Z"/>
+  </g>
+</svg>
