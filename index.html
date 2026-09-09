@@ -87,7 +87,7 @@ transition:background-color .16s var(--ease),border-color .16s var(--ease),color
 .nav{margin-left:auto;display:flex;align-items:center;gap:8px}
 .nav__links{display:flex;gap:4px}
 .nav__links a{display:inline-flex;align-items:center;min-height:38px;padding:0 14px;border-radius:var(--r-pill);
-color:var(--grey);font-size:14.5px;font-weight:600;letter-spacing:-.01em;transition:color .16s,background-color .16s}
+color:var(--steel);font-size:14.5px;font-weight:600;letter-spacing:-.01em;transition:color .16s,background-color .16s}
 .nav__links a:hover{color:var(--ink);background:var(--surface)}
 .nav .btn{min-height:40px;padding:0 20px;font-size:14px;margin-left:8px}
 .nav__toggle{display:none;align-items:center;justify-content:center;width:42px;height:42px;border-radius:var(--r-pill);
@@ -97,10 +97,23 @@ border:1px solid var(--line);background:var(--surface);cursor:pointer;margin-lef
 .nav.is-open .nav__toggle .x{display:block}.nav.is-open .nav__toggle .m{display:none}
 
 /* Hero */
-.hero{padding:calc(96px + 5vh) 0 40px;min-height:100svh;display:flex;align-items:center}
+.hero{position:relative;padding:calc(96px + 5vh) 0 40px;min-height:100svh;display:flex;align-items:center;overflow:hidden}
+/* The ground is the mark at architectural scale: the logo's own two ribbons, cyan and slate, laid across
+   the hero at a whisper. They are the only ornament on the page, they are ours alone, and they carry the
+   diagonal the wordmark carries. Cyan stays clear of the copy; slate is the only tint that passes under
+   text, at a strength the grey lede still clears at 4.5:1. */
+.hero__bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero__bg svg{width:100%;height:100%;display:block}
+.hero__grid{position:relative;z-index:1}
+.rbn{animation:rbIn 1.3s var(--out) both}
+.rbn path{animation:drift 26s ease-in-out infinite alternate}
+.rbn--2{animation-delay:.08s}.rbn--2 path{animation-duration:31s;animation-direction:alternate-reverse}
+@keyframes rbIn{from{opacity:0;transform:translate(-56px,52px)}to{opacity:1;transform:none}}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(-14px,13px)}}
 .hero__grid{display:grid;grid-template-columns:minmax(0,46fr) minmax(0,54fr);gap:clamp(32px,5vw,72px);align-items:center;width:100%}
 .hero h1{font-size:clamp(40px,5.2vw,74px);line-height:1;letter-spacing:-.045em;max-width:12ch}
-.hero__lede{margin-top:26px;font-size:clamp(17px,1.25vw,20px);line-height:1.55;color:var(--grey);max-width:44ch}
+/* Steel, not grey: the lede sits on the ribbons, and grey is 5.0:1 on the bare ground with nothing to spare. */
+.hero__lede{margin-top:26px;font-size:clamp(17px,1.25vw,20px);line-height:1.55;color:var(--steel);max-width:44ch}
 .hero__ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:34px}
 .hero__line{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);font-size:15px;font-weight:700;letter-spacing:-.01em;color:var(--ink);display:flex;gap:10px;flex-wrap:wrap}
 .hero__line span+span::before{content:"";display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--steel-line);vertical-align:middle;margin:0 12px 2px 0}
@@ -199,6 +212,16 @@ border-radius:var(--r-inlay);background:var(--attention-tint);font-size:12px;lin
 .on-ink{background:var(--ink);color:#fff}
 .on-ink .lede{color:var(--on-ink)}
 .on-ink h2{color:#fff}
+
+#solutions{padding-top:clamp(32px,4vw,56px)}
+.motion-intro{display:grid;grid-template-columns:minmax(0,440px) minmax(0,420px);justify-content:center;align-items:center;gap:16px;margin-bottom:8px}
+.motion-intro h2{font-size:clamp(40px,4.2vw,56px);max-width:12ch;line-height:1.06}
+.motion-intro .lede{margin-top:16px;max-width:34ch}
+.motion-wheel{position:relative;width:100%;aspect-ratio:1.15;max-width:420px;justify-self:end}
+.motion-wheel canvas,.motion-wheel__fallback{display:block;width:100%;height:100%;position:absolute;inset:0}
+.motion-wheel canvas{visibility:hidden}
+.motion-wheel.is-ready canvas{visibility:visible}
+.motion-wheel.is-ready .motion-wheel__fallback{display:none}
 
 /* Outcomes: statement beside proof, alternating. */
 .outcome{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,5vw,80px);align-items:center;padding:clamp(40px,5vw,64px) 0}
@@ -474,6 +497,7 @@ border-radius:var(--r-inlay);background:var(--attention-tint);font-size:12px;lin
   .hero{min-height:0;padding-top:110px}
   .hero__grid{grid-template-columns:1fr;gap:40px}
   .hero h1{max-width:14ch}
+  .hero__bg{opacity:.55}
   .sec__head{grid-template-columns:1fr;gap:18px}
   .outcome{grid-template-columns:1fr;gap:28px}
   .outcome:nth-child(even) .outcome__text{order:0}
@@ -496,6 +520,10 @@ border-radius:var(--r-inlay);background:var(--attention-tint);font-size:12px;lin
   .integ__list .ic{font-size:22px;color:var(--steel);flex:none}
 }
 @media (max-width:720px){
+  .motion-intro{grid-template-columns:1fr;gap:0;margin-bottom:0}
+  .motion-intro h2{max-width:12ch;font-size:clamp(40px,9vw,56px)}
+  .motion-intro .lede{margin-top:16px;max-width:36ch}
+  .motion-wheel{max-width:320px;justify-self:center}
   .nav__links,.nav .btn{display:none}
   .nav__toggle{display:inline-flex}
   .nav.is-open{position:absolute;left:0;right:0;top:0;padding:74px var(--gutter) 20px;background:var(--surface);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:6px}
@@ -523,7 +551,7 @@ border-radius:var(--r-inlay);background:var(--attention-tint);font-size:12px;lin
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .hero .rise,.hero__scene,.doc .hl,.scan,.fld__v,.fld__src,.fld .fnote,.scene__foot{animation:none;opacity:1;transform:none}
+  .hero .rise,.hero__scene,.rbn,.rbn path,.doc .hl,.scan,.fld__v,.fld__src,.fld .fnote,.scene__foot{animation:none;opacity:1;transform:none}
   .scan{display:none}
   .w>span{transform:none;transition:none}
   .rv{opacity:1;transform:none;transition:none}
@@ -648,6 +676,17 @@ and DESIGN.md
 
 <main>
 <section class="hero">
+  <div class="hero__bg" aria-hidden="true">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="rb-cyan" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#00D8FF"/><stop offset=".55" stop-color="#00CBFF"/><stop offset="1" stop-color="#00A8EC"/></linearGradient>
+        <linearGradient id="rb-slate" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#4B7EA4"/><stop offset=".5" stop-color="#2A6284"/><stop offset="1" stop-color="#12293F"/></linearGradient>
+      </defs>
+      <!-- The mark itself, at the scale of the page: cyan over slate, offset exactly as the logo offsets them. -->
+      <g transform="translate(-360 -144) scale(9)"><g class="rbn rbn--1"><path d="M80.5 8.87Q90 0 103 0L172 0Q185 0 175.5 8.87L104.5 75.13Q95 84 82 84L13 84Q0 84 9.5 75.13L80.5 8.87Z" fill="url(#rb-cyan)" fill-opacity=".08" stroke="url(#rb-cyan)" stroke-opacity=".32" stroke-width="1" vector-effect="non-scaling-stroke"/></g></g>
+      <g transform="translate(135 288) scale(9)"><g class="rbn rbn--2"><path d="M80.5 8.87Q90 0 103 0L172 0Q185 0 175.5 8.87L104.5 75.13Q95 84 82 84L13 84Q0 84 9.5 75.13L80.5 8.87Z" fill="url(#rb-slate)" fill-opacity=".06" stroke="url(#rb-slate)" stroke-opacity=".22" stroke-width="1" vector-effect="non-scaling-stroke"/></g></g>
+    </svg>
+  </div>
   <div class="wrap hero__grid">
     <div>
       <h1>The modern platform for vehicle title operations</h1>
@@ -706,9 +745,24 @@ and DESIGN.md
 
 <section class="sec" id="solutions">
   <div class="wrap">
-    <div class="sec__head">
-      <h2 class="rv">Three things change on day one.</h2>
-      <p class="lede rv rv2">Evidence comes in, the application fills itself in, the next step is always named, and nothing goes out with a known problem in it.</p>
+    <div class="motion-intro">
+      <div>
+        <h2>Keep title work moving.</h2>
+        <p class="lede">From scattered documents to a clear path forward.</p>
+      </div>
+      <div class="motion-wheel" id="motion-wheel">
+        <svg class="motion-wheel__fallback" viewBox="0 0 560 467" fill="none" aria-hidden="true">
+          <g transform="translate(280 225) rotate(-8) scale(.88 1)" stroke="currentColor" stroke-linecap="round">
+            <circle r="163" stroke-width="3" stroke-dasharray=".1 7" color="#2A6284"/>
+            <circle r="150" stroke-width="22" stroke-dasharray=".1 7" color="#AAC0CE"/>
+            <circle r="132" stroke-width="3" stroke-dasharray=".1 6" color="#2A6284"/>
+            <circle r="112" stroke-width="3" stroke-dasharray=".1 5" color="#0072B4"/>
+            <path d="M0-25 0-108M24-8 103-33M15 20 64 87M-15 20-64 87M-24-8-103-33" stroke-width="8" stroke-dasharray=".1 7" color="#0072B4"/>
+            <circle r="24" stroke-width="3" stroke-dasharray=".1 5" color="#0072B4"/>
+          </g>
+        </svg>
+        <canvas aria-hidden="true"></canvas>
+      </div>
     </div>
 
     <article class="outcome">
@@ -1132,6 +1186,209 @@ and DESIGN.md
 
 <script>
 (function(){
+  var wheel = document.getElementById('motion-wheel');
+  var canvas = wheel.querySelector('canvas');
+  var context = canvas.getContext('2d');
+  if (!context) return;
+  var preference = matchMedia('(prefers-reduced-motion: reduce)');
+  var points = [], ambient = [], seed = 17;
+  var width = 0, height = 0, elapsed = 0, previous = 0, frame = 0;
+  var visible = false, settling = false;
+  var pointer = {active:false,horizontal:0,vertical:0,strength:0,directionX:1,directionY:0};
+  var faceDepth = .27;
+  var fullTurn = Math.PI * 2;
+  function random(){
+    seed = (seed * 16807) % 2147483647;
+    return (seed - 1) / 2147483646;
+  }
+  function addPoint(radius, angle, depth, accent, weight){
+    points.push({horizontal:radius * Math.cos(angle),vertical:radius * Math.sin(angle),depth:depth,
+      scatterX:(random() - .5) * 2.4,scatterY:(random() - .5) * 1.8,scatterZ:(random() - .5) * 1.8,
+      delay:random() * .55,size:.65 + random() * .3,accent:accent,weight:weight === undefined ? 1 : weight,
+      offsetX:0,offsetY:0});
+  }
+  for (var side = -1; side <= 1; side += 2) {
+    for (var ring = 0; ring < 128; ring++) {
+      for (var band = 0; band < 8; band++) {
+        var sideRadius = .665 + band / 7 * .29;
+        var sideDepth = .255 + Math.sin(band / 7 * Math.PI) * .035;
+        addPoint(sideRadius,(ring + (band % 2) * .5) / 128 * fullTurn,side * sideDepth,false,side > 0 ? .95 : .22);
+      }
+    }
+  }
+  for (var block = 0; block < 64; block++) {
+    for (var lane = 0; lane < 5; lane++) {
+      for (var tread = 0; tread < 5; tread++) {
+        var treadDepth = -.24 + lane * .1 + tread / 4 * .065;
+        var treadAngle = (block + Math.abs(treadDepth) * 1.4) / 64 * fullTurn;
+        var treadRadius = 1 - Math.pow(Math.abs(treadDepth) / .32,4) * .055;
+        addPoint(treadRadius,treadAngle,treadDepth,false,1.15);
+        if (tread === 0 || tread === 4) addPoint(treadRadius,treadAngle + .028,treadDepth,false,.8);
+      }
+    }
+  }
+  for (var edge = 0; edge < 160; edge++) {
+    var edgeAngle = edge / 160 * fullTurn;
+    addPoint(.655,edgeAngle,faceDepth,true,1.15);
+    addPoint(.625,edgeAngle,faceDepth,true,1.1);
+    addPoint(.585,edgeAngle,faceDepth,true,.65);
+    addPoint(.49,edgeAngle,faceDepth,false,.24);
+    if (edge % 2 === 0) {
+      addPoint(.17,edgeAngle,faceDepth,true);
+      addPoint(.115,edgeAngle,faceDepth,true,1.15);
+    }
+  }
+  for (var spoke = 0; spoke < 5; spoke++) {
+    for (var step = 0; step < 22; step++) {
+      for (var fork = -1; fork <= 1; fork += 2) {
+        for (var bevel = 0; bevel < 3; bevel++) {
+          var radius = .175 + step / 21 * .43;
+          var angle = spoke / 5 * fullTurn - Math.PI / 2 + fork * (.04 + step / 21 * .13) + bevel * .017;
+          addPoint(radius,angle,faceDepth,true,bevel === 1 ? .55 : 1.15);
+        }
+      }
+    }
+    var lugAngle = spoke / 5 * fullTurn - Math.PI / 2;
+    for (var lug = 0; lug < 12; lug++) {
+      var lugHorizontal = .14 * Math.cos(lugAngle) + .018 * Math.cos(lug / 12 * fullTurn);
+      var lugVertical = .14 * Math.sin(lugAngle) + .018 * Math.sin(lug / 12 * fullTurn);
+      addPoint(Math.hypot(lugHorizontal,lugVertical),Math.atan2(lugVertical,lugHorizontal),faceDepth,false,1.2);
+    }
+  }
+  for (var vent = 0; vent < 30; vent++) {
+    for (var ventEdge = 0; ventEdge < 6; ventEdge++) {
+      var ventAngle = vent / 30 * fullTurn;
+      var ventHorizontal = .43 * Math.cos(ventAngle) + .012 * Math.cos(ventEdge / 6 * fullTurn);
+      var ventVertical = .43 * Math.sin(ventAngle) + .012 * Math.sin(ventEdge / 6 * fullTurn);
+      addPoint(Math.hypot(ventHorizontal,ventVertical),Math.atan2(ventVertical,ventHorizontal),faceDepth,false,.3);
+    }
+  }
+  for (var mote = 0; mote < 32; mote++) {
+    ambient.push({angle:random() * fullTurn,radius:1.08 + random() * .18,phase:random() * fullTurn,size:.7 + random() * .5});
+  }
+  function draw(delta){
+    if (!width || !height) return;
+    context.clearRect(0,0,width,height);
+    var time = preference.matches ? 0 : elapsed;
+    var scale = Math.min(width * .4,height * .44);
+    var yaw = -.66 + Math.sin(time * .22) * .09;
+    var rotation = time * .045 - .12;
+    var cosine = Math.cos(rotation), sine = Math.sin(rotation);
+    var yawCosine = Math.cos(yaw), yawSine = Math.sin(yaw);
+    var floatOffset = Math.sin(time * .65) * scale * .018;
+    var influence = Math.min(width * .1,48);
+    var response = 1 - Math.exp(-14 * (delta || 1 / 60));
+    pointer.strength *= Math.exp(-6 * (delta || 1 / 60));
+    settling = false;
+    var projected = points.map(function(point){
+      var progress = preference.matches ? 1 : Math.max(0,Math.min(1,(time - point.delay) / 3));
+      var scatter = Math.pow(1 - progress,4);
+      var horizontal = point.horizontal * cosine - point.vertical * sine + point.scatterX * scatter;
+      var vertical = point.horizontal * sine + point.vertical * cosine + point.scatterY * scatter;
+      var depth = point.depth + point.scatterZ * scatter;
+      var turnedHorizontal = horizontal * yawCosine + depth * yawSine;
+      var turnedDepth = -horizontal * yawSine + depth * yawCosine;
+      var screenHorizontal = width * .5 + turnedHorizontal * scale;
+      var screenVertical = height * .5 + (vertical * .994 - turnedDepth * .11) * scale + floatOffset;
+      var targetX = 0, targetY = 0;
+      if (pointer.active && !preference.matches) {
+        var distanceX = screenHorizontal - pointer.horizontal;
+        var distanceY = screenVertical - pointer.vertical;
+        var distance = Math.hypot(distanceX,distanceY);
+        if (distance < influence) {
+          var force = Math.pow(1 - distance / influence,2) * 8 * pointer.strength;
+          targetX = (pointer.directionX * .75 + Math.cos(point.scatterX * fullTurn) * .25) * force;
+          targetY = (pointer.directionY * .75 + Math.sin(point.scatterY * fullTurn) * .25) * force;
+        }
+      }
+      point.offsetX = preference.matches ? 0 : point.offsetX + (targetX - point.offsetX) * response;
+      point.offsetY = preference.matches ? 0 : point.offsetY + (targetY - point.offsetY) * response;
+      if (Math.abs(point.offsetX) + Math.abs(point.offsetY) > .01) settling = true;
+      return {horizontal:screenHorizontal + point.offsetX,
+        vertical:screenVertical + point.offsetY,
+        depth:turnedDepth,size:point.size * Math.max(.8,width / 460),accent:point.accent,scatter:scatter,weight:point.weight};
+    });
+    projected.sort(function(first,second){return first.depth - second.depth;});
+    projected.forEach(function(point){
+      context.globalAlpha = Math.min(1,(.4 + (point.depth + 1.1) * .24) * point.weight) * (1 - point.scatter * .35);
+      context.fillStyle = point.accent ? '#0072B4' : '#18384F';
+      context.beginPath();
+      context.arc(point.horizontal,point.vertical,point.size,0,fullTurn);
+      context.fill();
+    });
+    ambient.forEach(function(point){
+      var drift = point.angle + time * .018;
+      var radius = point.radius + Math.sin(time * .45 + point.phase) * .035;
+      context.globalAlpha = .2 + Math.sin(time * .5 + point.phase) * .08;
+      context.fillStyle = '#0072B4';
+      context.beginPath();
+      context.arc(width * .5 + Math.cos(drift) * radius * scale,height * .5 + Math.sin(drift) * radius * scale * .85,point.size,0,fullTurn);
+      context.fill();
+    });
+    context.globalAlpha = 1;
+  }
+  function tick(timestamp){
+    var delta = previous ? Math.min((timestamp - previous) / 1000,.05) : 1 / 60;
+    if (previous) elapsed = Math.min(elapsed + delta,4.6);
+    previous = timestamp;
+    draw(delta);
+    frame = needsFrame() ? requestAnimationFrame(tick) : 0;
+  }
+  function needsFrame(){
+    return elapsed < 4.6 || pointer.strength > .001 || settling;
+  }
+  function sync(){
+    cancelAnimationFrame(frame);
+    frame = 0;
+    previous = 0;
+    if (!visible || preference.matches || document.hidden) releasePointer();
+    if (visible && !preference.matches && !document.hidden && needsFrame()) frame = requestAnimationFrame(tick);
+    else draw();
+  }
+  function resize(){
+    releasePointer();
+    width = wheel.clientWidth;
+    height = wheel.clientHeight;
+    var density = Math.min(devicePixelRatio || 1,2);
+    canvas.width = Math.round(width * density);
+    canvas.height = Math.round(height * density);
+    context.setTransform(density,0,0,density,0,0);
+    draw();
+  }
+  canvas.addEventListener('pointermove',function(event){
+    if (event.pointerType === 'touch' || preference.matches) return;
+    var movementX = event.offsetX - pointer.horizontal;
+    var movementY = event.offsetY - pointer.vertical;
+    var movement = Math.hypot(movementX,movementY);
+    if (pointer.active && movement < .5) return;
+    pointer.directionX = pointer.active && movement ? movementX / movement : 1;
+    pointer.directionY = pointer.active && movement ? movementY / movement : 0;
+    pointer.strength = 1;
+    pointer.active = true;
+    pointer.horizontal = event.offsetX;
+    pointer.vertical = event.offsetY;
+    if (!frame) sync();
+  },{passive:true});
+  function releasePointer(){pointer.active = false;pointer.strength = 0;}
+  canvas.addEventListener('pointerleave',releasePointer);
+  canvas.addEventListener('pointercancel',releasePointer);
+  addEventListener('blur',releasePointer);
+  addEventListener('scroll',releasePointer,{passive:true});
+  preference.addEventListener('change',sync);
+  document.addEventListener('visibilitychange',sync);
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(wheel);
+  else addEventListener('resize',resize);
+  resize();
+  wheel.classList.add('is-ready');
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(entries){visible = entries[0].isIntersecting;sync();},{threshold:.05}).observe(wheel);
+  } else {
+    visible = true;
+  }
+  sync();
+})();
+
+(function(){
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Header and menu
@@ -1170,7 +1427,7 @@ and DESIGN.md
     });
   }
   if (!reduced) {
-    document.querySelectorAll('.sec h2, .cta h2').forEach(function(el){ split(el, 45, 0); });
+    document.querySelectorAll('.sec h2, .cta h2').forEach(function(el){ if (!el.closest('.motion-intro')) split(el, 45, 0); });
     var h1 = document.querySelector('.hero h1');
     if (h1) {
       split(h1, 38, 60);
