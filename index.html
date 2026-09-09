@@ -97,12 +97,12 @@ border:1px solid var(--line);background:var(--surface);cursor:pointer;margin-lef
 .nav.is-open .nav__toggle .x{display:block}.nav.is-open .nav__toggle .m{display:none}
 
 /* Hero */
-.hero{position:relative;padding:calc(96px + 5vh) 0 40px;min-height:100svh;display:flex;align-items:center;overflow:hidden}
+.hero{position:relative;padding:clamp(112px,12vh,160px) 0 32px;display:flex;align-items:center;overflow:hidden}
 /* The ground is the mark at architectural scale: the logo's own two ribbons, cyan and slate, laid across
    the hero at a whisper. They are the only ornament on the page, they are ours alone, and they carry the
    diagonal the wordmark carries. Cyan stays clear of the copy; slate is the only tint that passes under
    text, at a strength the grey lede still clears at 4.5:1. */
-.hero__bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero__bg{position:absolute;inset:0;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(#000 65%,transparent 100%);mask-image:linear-gradient(#000 65%,transparent 100%)}
 .hero__bg svg{width:100%;height:100%;display:block}
 .hero__grid{position:relative;z-index:1}
 .rbn{animation:rbIn 1.3s var(--out) both}
@@ -213,22 +213,27 @@ border-radius:var(--r-inlay);background:var(--attention-tint);font-size:12px;lin
 .on-ink .lede{color:var(--on-ink)}
 .on-ink h2{color:#fff}
 
-#solutions{padding-top:clamp(32px,4vw,56px)}
-.motion-intro{display:grid;grid-template-columns:minmax(0,440px) minmax(0,420px);justify-content:center;align-items:center;gap:16px;margin-bottom:8px}
+#solutions{padding-top:clamp(32px,4vw,56px);padding-bottom:0}
+.motion-intro{display:grid;grid-template-columns:minmax(0,46fr) minmax(0,54fr);align-items:center;gap:clamp(32px,5vw,72px);margin-bottom:8px}
 .motion-intro h2{font-size:clamp(40px,4.2vw,56px);max-width:12ch;line-height:1.06}
 .motion-intro .lede{margin-top:16px;max-width:34ch}
-.motion-wheel{position:relative;width:100%;aspect-ratio:1.15;max-width:420px;justify-self:end}
+.motion-wheel{position:relative;width:100%;aspect-ratio:1.15;max-width:420px;justify-self:center}
 .motion-wheel canvas,.motion-wheel__fallback{display:block;width:100%;height:100%;position:absolute;inset:0}
 .motion-wheel canvas{visibility:hidden}
 .motion-wheel.is-ready canvas{visibility:visible}
 .motion-wheel.is-ready .motion-wheel__fallback{display:none}
 
 /* Outcomes: statement beside proof, alternating. */
-.outcome{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,5vw,80px);align-items:center;padding:clamp(40px,5vw,64px) 0}
-.outcome+.outcome{border-top:1px solid var(--line)}
+.outcome{--tile-inset:clamp(24px,3.5vw,64px);position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;padding:clamp(48px,5vw,72px) 0}
+.outcome::before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(90deg,var(--surface) 50%,var(--ink-2) 50%);pointer-events:none}
+.outcome:nth-child(even)::before{background:linear-gradient(90deg,var(--ink-2) 50%,var(--surface) 50%)}
+.outcome__text{width:calc(100% - 2 * var(--tile-inset));max-width:440px;justify-self:center;text-align:center}
 .outcome:nth-child(even) .outcome__text{order:2}
-.outcome h3{font-size:clamp(26px,2.6vw,38px);letter-spacing:-.035em;line-height:1.08;max-width:14ch}
-.outcome p{margin-top:18px;font-size:17px;line-height:1.6;color:var(--grey);max-width:44ch}
+.outcome h3{font-size:clamp(28px,3vw,42px);letter-spacing:-.035em;line-height:1.08;max-width:14ch;margin-inline:auto}
+.outcome p{margin:18px auto 0;font-size:17px;line-height:1.6;color:var(--grey);max-width:44ch}
+.outcome>.frame{width:calc(100% - 2 * var(--tile-inset));max-width:560px;justify-self:center;border-color:transparent;box-shadow:0 18px 36px -20px rgba(0,0,0,.55)}
+.outcome .m-row__v{grid-column:1/-1;overflow-wrap:anywhere}
+.outcome .m-row__s{grid-row:auto}
 .outcome__more{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-weight:700;font-size:15px;color:var(--accent)}
 .outcome__more .ic{font-size:18px;transition:transform .2s var(--out)}
 .outcome__more:hover .ic{transform:translateX(3px)}
@@ -499,7 +504,10 @@ border-radius:var(--r-inlay);background:var(--attention-tint);font-size:12px;lin
   .hero h1{max-width:14ch}
   .hero__bg{opacity:.55}
   .sec__head{grid-template-columns:1fr;gap:18px}
-  .outcome{grid-template-columns:1fr;gap:28px}
+  .outcome{--tile-inset:var(--gutter);grid-template-columns:minmax(0,1fr);gap:64px;padding:40px 0 32px}
+  .outcome::before,.outcome:nth-child(even)::before{position:relative;inset:auto;grid-column:1;grid-row:2;align-self:stretch;width:100%;margin-block:-32px;background:var(--ink-2)}
+  .outcome__text{grid-column:1;grid-row:1}
+  .outcome>.frame{grid-column:1;grid-row:2}
   .outcome:nth-child(even) .outcome__text{order:0}
   .how__grid{grid-template-columns:1fr;gap:0}
   .pin{position:sticky;top:72px;z-index:2;order:-1;background:var(--ink);padding-bottom:14px}
@@ -764,6 +772,7 @@ and DESIGN.md
         <canvas aria-hidden="true"></canvas>
       </div>
     </div>
+  </div>
 
     <article class="outcome">
       <div class="outcome__text rv">
@@ -845,7 +854,6 @@ and DESIGN.md
         </div>
       </figure>
     </article>
-  </div>
 </section>
 
 <section class="how on-ink" id="platform">
@@ -1193,7 +1201,7 @@ and DESIGN.md
   var preference = matchMedia('(prefers-reduced-motion: reduce)');
   var points = [], ambient = [], seed = 17;
   var width = 0, height = 0, elapsed = 0, previous = 0, frame = 0;
-  var visible = false, settling = false;
+  var visible = false, started = false, readyToStart = false;
   var pointer = {active:false,horizontal:0,vertical:0,strength:0,directionX:1,directionY:0};
   var faceDepth = .27;
   var fullTurn = Math.PI * 2;
@@ -1269,6 +1277,7 @@ and DESIGN.md
   function draw(delta){
     if (!width || !height) return;
     context.clearRect(0,0,width,height);
+    if (!started && !preference.matches) return;
     var time = preference.matches ? 0 : elapsed;
     var scale = Math.min(width * .4,height * .44);
     var yaw = -.66 + Math.sin(time * .22) * .09;
@@ -1279,7 +1288,6 @@ and DESIGN.md
     var influence = Math.min(width * .1,48);
     var response = 1 - Math.exp(-14 * (delta || 1 / 60));
     pointer.strength *= Math.exp(-6 * (delta || 1 / 60));
-    settling = false;
     var projected = points.map(function(point){
       var progress = preference.matches ? 1 : Math.max(0,Math.min(1,(time - point.delay) / 3));
       var scatter = Math.pow(1 - progress,4);
@@ -1303,7 +1311,6 @@ and DESIGN.md
       }
       point.offsetX = preference.matches ? 0 : point.offsetX + (targetX - point.offsetX) * response;
       point.offsetY = preference.matches ? 0 : point.offsetY + (targetY - point.offsetY) * response;
-      if (Math.abs(point.offsetX) + Math.abs(point.offsetY) > .01) settling = true;
       return {horizontal:screenHorizontal + point.offsetX,
         vertical:screenVertical + point.offsetY,
         depth:turnedDepth,size:point.size * Math.max(.8,width / 460),accent:point.accent,scatter:scatter,weight:point.weight};
@@ -1329,20 +1336,17 @@ and DESIGN.md
   }
   function tick(timestamp){
     var delta = previous ? Math.min((timestamp - previous) / 1000,.05) : 1 / 60;
-    if (previous) elapsed = Math.min(elapsed + delta,4.6);
+    if (previous) elapsed += delta;
     previous = timestamp;
     draw(delta);
-    frame = needsFrame() ? requestAnimationFrame(tick) : 0;
-  }
-  function needsFrame(){
-    return elapsed < 4.6 || pointer.strength > .001 || settling;
+    frame = requestAnimationFrame(tick);
   }
   function sync(){
     cancelAnimationFrame(frame);
     frame = 0;
     previous = 0;
     if (!visible || preference.matches || document.hidden) releasePointer();
-    if (visible && !preference.matches && !document.hidden && needsFrame()) frame = requestAnimationFrame(tick);
+    if (started && visible && !preference.matches && !document.hidden) frame = requestAnimationFrame(tick);
     else draw();
   }
   function resize(){
@@ -1373,7 +1377,10 @@ and DESIGN.md
   canvas.addEventListener('pointerleave',releasePointer);
   canvas.addEventListener('pointercancel',releasePointer);
   addEventListener('blur',releasePointer);
-  addEventListener('scroll',releasePointer,{passive:true});
+  addEventListener('scroll',function(){
+    releasePointer();
+    if (!started && readyToStart && window.scrollY > 0) {started = true;sync();}
+  },{passive:true});
   preference.addEventListener('change',sync);
   document.addEventListener('visibilitychange',sync);
   if ('ResizeObserver' in window) new ResizeObserver(resize).observe(wheel);
@@ -1381,8 +1388,17 @@ and DESIGN.md
   resize();
   wheel.classList.add('is-ready');
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function(entries){visible = entries[0].isIntersecting;sync();},{threshold:.05}).observe(wheel);
+    new IntersectionObserver(function(entries){
+      var entry = entries[0];
+      visible = entry.isIntersecting;
+      var threshold = entry.rootBounds && entry.boundingClientRect.height > 0
+        ? Math.min(.8,entry.rootBounds.height / entry.boundingClientRect.height * .85) : .8;
+      readyToStart = visible && entry.intersectionRatio >= threshold;
+      if (!started && readyToStart && window.scrollY > 0) started = true;
+      sync();
+    },{threshold:Array.from({length:21},function(value,index){return index / 20;}),rootMargin:'-84px 0px -24px 0px'}).observe(wheel);
   } else {
+    started = true;
     visible = true;
   }
   sync();
