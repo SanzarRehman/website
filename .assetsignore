@@ -4,3 +4,19 @@
 wrangler.jsonc
 final.png
 .wrangler
+
+# Everything below is in the repo but must not be served.
+.DS_Store
+.impeccable
+
+# The old brand. The company is Conveyexa; these are ConveyPath logos and a ConveyPath-titled
+# standalone page, all of them unreferenced by index.html since the v2 rebuild. Served from the
+# marketing domain they are reachable by anyone who guesses the path.
+files
+conveypath-hero-keytag.html
+
+# Superseded hero art. The v2 rebuild stopped referencing these; 209K of images nothing asks for.
+hero-keytag3-560.jpg
+hero-keytag3-560.webp
+hero-keytag3-648.jpg
+hero-keytag3-648.webp
