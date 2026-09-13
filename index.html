@@ -404,12 +404,29 @@ border-radius:var(--r-inlay);background:var(--attention-tint);font-size:12px;lin
 @keyframes travel{0%{offset-distance:0%;opacity:0}12%{opacity:1}84%{opacity:1}100%{offset-distance:100%;opacity:0}}
 
 /* Industries */
-.ind{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.ind li{display:grid;gap:10px;padding:22px 22px 24px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-panel);transition:border-color .2s,transform .3s var(--out)}
-.ind li:hover{border-color:var(--steel-line);transform:translateY(-2px)}
-.ind .ic{font-size:26px;color:var(--steel)}
-.ind h3{font-size:17px;letter-spacing:-.025em;margin-top:6px}
-.ind p{font-size:14px;line-height:1.5;color:var(--grey)}
+/* Industries: the mark returns. The hero lays the logo's two ribbons across the page at a whisper; they
+   come back here, mirrored, so the two places the mark appears at scale bookend the page. The eight
+   industries are a ledger rather than a grid of cards, because eight opaque tiles would have hidden the
+   mark they sat on, and because one long list read down says "wherever" in a way eight equal boxes do
+   not. Slate is still the only tint that passes under text, at the hero's strength; cyan keeps to the
+   corner, clear of copy. The ribbons enter on the page's own reveal rather than on load. */
+.ind-sec{position:relative;overflow:hidden}
+.ind-sec .wrap{position:relative;z-index:1}
+.ind-sec h2{font-size:clamp(34px,4vw,60px);max-width:14ch}
+.ind__bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.ind__bg svg{width:100%;height:100%;display:block}
+.ind__bg.rv{opacity:1;transform:none;transition:none}
+.ind__bg .rbn{animation:none;opacity:0}
+.ind__bg.in .rbn{animation:rbIn 1.3s var(--out) both}
+.ind__bg.in .rbn--2{animation-delay:.1s}
+.ind{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:column;grid-template-rows:repeat(4,auto);column-gap:clamp(40px,6vw,96px)}
+.ind li{display:grid;grid-template-columns:40px minmax(0,1fr);column-gap:16px;align-items:start;align-content:start;padding:26px 0 28px;border-top:1px solid var(--line);transition:border-color .2s}
+.ind li:nth-child(4),.ind li:nth-child(8){border-bottom:1px solid var(--line)}
+.ind li:hover{border-color:var(--steel-line)}
+.ind .ic{grid-row:1/span 2;font-size:26px;color:var(--steel);margin-top:4px;transition:color .2s}
+.ind li:hover .ic{color:var(--accent)}
+.ind h3{grid-column:2;font-size:clamp(22px,1.8vw,28px);letter-spacing:-.03em;line-height:1.1}
+.ind p{grid-column:2;margin-top:8px;font-size:15.5px;line-height:1.5;color:var(--grey);max-width:44ch}
 
 /* Trust */
 .trust{border-top:1px solid var(--ink-line)}
@@ -475,7 +492,6 @@ border-radius:var(--r-inlay);background:var(--attention-tint);font-size:12px;lin
   .cap-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .trust-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .screens{grid-template-columns:1fr}
-  .ind{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:960px){
   .hero{min-height:0;padding-top:110px}
@@ -525,7 +541,10 @@ border-radius:var(--r-inlay);background:var(--attention-tint);font-size:12px;lin
   .m-two{grid-template-columns:1fr}
   .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
   .dash__two{grid-template-columns:1fr}
-  .cap-grid,.trust-grid,.ind{grid-template-columns:1fr}
+  .cap-grid,.trust-grid{grid-template-columns:1fr}
+  .ind{grid-template-columns:1fr;grid-auto-flow:row;grid-template-rows:none}
+  .ind li:nth-child(4){border-bottom:0}
+  .ind__bg{opacity:.7}
   .form__row{grid-template-columns:1fr}
   .pin .frame{height:min(62vh,440px)}
   .pane .m-body{padding:12px 14px;gap:8px;overflow:auto}
@@ -534,7 +553,7 @@ border-radius:var(--r-inlay);background:var(--attention-tint);font-size:12px;lin
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .hero .rise,.hero__scene,.rbn,.rbn path,.doc .hl,.scan,.fld__v,.fld__src,.fld .fnote,.scene__foot{animation:none;opacity:1;transform:none}
+  .hero .rise,.hero__scene,.rbn,.rbn path,.ind__bg .rbn,.doc .hl,.scan,.fld__v,.fld__src,.fld .fnote,.scene__foot{animation:none;opacity:1;transform:none}
   .scan{display:none}
   .w>span{transform:none;transition:none}
   .rv{opacity:1;transform:none;transition:none}
@@ -901,7 +920,6 @@ and DESIGN.md
             <div class="m-body">
               <ul class="tl">
                 <li class="tl--done"><span class="tl__d"><svg class="ic"><use href="#i-check"/></svg></span><div><div class="tl__t">Documents confirmed</div><div class="tl__m">4 documents · 14 Aug</div></div></li>
-                <li class="tl--done"><span class="tl__d"><svg class="ic"><use href="#i-check"/></svg></span><div><div class="tl__t">Signed by both parties</div><div class="tl__m">Certificate of completion attached · 15 Aug</div></div></li>
                 <li class="tl--done"><span class="tl__d"><svg class="ic"><use href="#i-check"/></svg></span><div><div class="tl__t">Submitted</div><div class="tl__m">12 checks passed · 15 Aug</div></div></li>
                 <li class="tl--done"><span class="tl__d"><svg class="ic"><use href="#i-clock"/></svg></span><div><div class="tl__t">In review with the state</div><div class="tl__m">6 days</div></div></li>
                 <li class="tl--ok"><span class="tl__d"><svg class="ic"><use href="#i-check"/></svg></span><div><div class="tl__t">Approved · title issued</div><div class="tl__m">First submission · 21 Aug</div></div></li>
@@ -996,7 +1014,15 @@ and DESIGN.md
   </div>
 </section>
 
-<section class="sec" id="industries">
+<section class="sec ind-sec" id="industries">
+  <div class="ind__bg rv" aria-hidden="true">
+    <svg viewBox="0 0 1440 940" preserveAspectRatio="xMidYMid slice">
+      <!-- The hero's two ribbons, mirrored: slate sweeps under the ledger, cyan holds the bottom-right corner
+           where the hero had it top-left. Gradients are the hero's, by id. -->
+      <g transform="translate(140 300) scale(9)"><g class="rbn rbn--1"><path d="M80.5 8.87Q90 0 103 0L172 0Q185 0 175.5 8.87L104.5 75.13Q95 84 82 84L13 84Q0 84 9.5 75.13L80.5 8.87Z" fill="url(#rb-slate)" fill-opacity=".06" stroke="url(#rb-slate)" stroke-opacity=".22" stroke-width="1" vector-effect="non-scaling-stroke"/></g></g>
+      <g transform="translate(760 720) scale(7)"><g class="rbn rbn--2"><path d="M80.5 8.87Q90 0 103 0L172 0Q185 0 175.5 8.87L104.5 75.13Q95 84 82 84L13 84Q0 84 9.5 75.13L80.5 8.87Z" fill="url(#rb-cyan)" fill-opacity=".08" stroke="url(#rb-cyan)" stroke-opacity=".32" stroke-width="1" vector-effect="non-scaling-stroke"/></g></g>
+    </svg>
+  </div>
   <div class="wrap">
     <div class="sec__head">
       <h2 class="rv">Wherever titles change hands at volume.</h2>
